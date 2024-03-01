@@ -1,6 +1,10 @@
 # Pinchoneta
 
 Aplicación para llevar el registro de pinchos pedidos
+![ejemplo](https://github.com/mariorht/Pinchoneta/assets/22685503/3e3a641f-4017-4475-a637-c7635089a6e7)
+
+## Último estado
+Tiene la base de la visualización con un ejemplo de números aleatorios
 
 ## Usage Instructions
 
