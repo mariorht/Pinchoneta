@@ -3,10 +3,15 @@ from flask import Flask, render_template
 
 from datetime import datetime, timedelta
 import random
-
+from database import init_db
 
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
+
+def initialize_app():
+    init_db()
+    
+
 
 @app.route('/')
 def home():
@@ -26,5 +31,7 @@ def profile():
     return render_template('profile.html', usage_data=usage_data)
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
+
+
+initialize_app()
