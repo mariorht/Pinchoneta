@@ -1,0 +1,10 @@
+.d3_tooltip {
+    position: absolute;
+    visibility: hidden;
+    background: white;
+    border: solid 1px #aaa;
+    border-radius: 5px;
+    padding: 5px;
+    pointer-events: none;
+    /* Agrega otras propiedades de estilo si es necesario */
+}
