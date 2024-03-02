@@ -1,0 +1,25 @@
+/* styles.css */
+.navbar {
+    overflow: hidden;
+    background-color: #2196F3; /* Azul Material Design */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Sombra para dar profundidad */
+}
+
+.navbar a {
+    float: left;
+    display: block;
+    color: white; /* Texto blanco para contraste */
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: background-color 0.3s; /* Transición suave al cambiar de color */
+}
+
+.navbar a:hover {
+    background-color: #0b7dda; /* Un azul un poco más oscuro al pasar el mouse */
+}
+
+.content {
+    padding: 20px;
+    margin-top: 30px; /* Espacio entre el contenido y la navbar */
+}

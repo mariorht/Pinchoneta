@@ -6,8 +6,11 @@
     <!-- Incluir D3.js -->
     <script src="https://d3js.org/d3.v6.min.js"></script>
 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+
     <style>
-        .tooltip {
+        .d3_tooltip {
             position: absolute;
             visibility: hidden;
             background: white;
@@ -20,6 +23,9 @@
     </style>
 </head>
 <body>
+    {% include 'navbar.html' %}
+
+
     <h1>Perfil de Usuario</h1>
     <div id="usageChart"></div>
 
@@ -66,7 +72,7 @@
 
         // Tooltip para mostrar información al pasar el mouse
         const tooltip = d3.select("body").append("div")
-            .attr("class", "tooltip")
+            .attr("class", "d3_tooltip")
             .style("position", "absolute")
             .style("visibility", "hidden")
             .style("background", "white")
