@@ -23,3 +23,17 @@
     padding: 20px;
     margin-top: 30px; /* Espacio entre el contenido y la navbar */
 }
+
+
+/* Añade esto en tu styles.css */
+.columna {
+    float: left;
+    width: 50%;
+}
+
+/* Limpiar floats después de las columnas */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}

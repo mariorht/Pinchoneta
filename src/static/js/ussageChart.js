@@ -46,14 +46,14 @@ const tooltip = d3.select("body").append("div")
     .style("padding", "5px")
     .style("pointer-events", "none");
 
-    dayRects.on("mouseover", function(event, d) {
-tooltip.style("visibility", "visible")
-       .html(`Fecha: ${d3.timeFormat("%Y-%m-%d")(d.date)}<br>Contribuciones: ${d.count}`);
+dayRects.on("mouseover", function (event, d) {
+    tooltip.style("visibility", "visible")
+        .html(`Fecha: ${d3.timeFormat("%Y-%m-%d")(d.date)}<br>Contribuciones: ${d.count}`);
 })
-.on("mousemove", function(event) {
-tooltip.style("top", (event.pageY - 10) + "px")
-       .style("left", (event.pageX + 10) + "px");
-})
-.on("mouseout", function() {
-tooltip.style("visibility", "hidden");
-});
+    .on("mousemove", function (event) {
+        tooltip.style("top", (event.pageY - 10) + "px")
+            .style("left", (event.pageX + 10) + "px");
+    })
+    .on("mouseout", function () {
+        tooltip.style("visibility", "hidden");
+    });

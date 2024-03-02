@@ -27,3 +27,32 @@ def init_db():
     else:
         print("Ya existe base de datos")
 
+
+def insert_user(nombre, email, fecha_registro):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('INSERT INTO Usuarios (Nombre, Email, FechaRegistro) VALUES (?, ?, ?)', 
+                   (nombre, email, fecha_registro))
+    conn.commit()
+    conn.close()
+
+
+def insert_ingredient(nombre, descripcion):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('INSERT INTO Ingredientes (Nombre, Descripción) VALUES (?, ?)', 
+                   (nombre, descripcion))
+    conn.commit()
+    conn.close()
+
+def get_all_users():
+    conn = get_db_connection()
+    users = conn.execute('SELECT * FROM Usuarios').fetchall()
+    conn.close()
+    return users
+
+def get_all_ingredients():
+    conn = get_db_connection()
+    ingredients = conn.execute('SELECT * FROM Ingredientes').fetchall()
+    conn.close()
+    return ingredients

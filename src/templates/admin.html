@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Página de Administrador</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+</head>
+
+<body>
+    {% include 'navbar.html' %}
+
+
+    <div class="row">
+        <div class="columna">
+            <h1>Crear Nuevo Usuario</h1>
+            <form action="/admin/crear-usuario" method="post">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required><br><br>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required><br><br>
+
+                <label for="fechaRegistro">Fecha de Registro:</label>
+                <input type="date" id="fechaRegistro" name="fechaRegistro" required><br><br>
+
+                <input type="submit" value="Crear Usuario">
+            </form>
+        </div>
+        <div class="columna">
+            <!-- Tabla de Usuarios -->
+            <table>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Fecha de Registro</th>
+                </tr>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user[1] }}</td>
+                    <td>{{ user[2] }}</td>
+                    <td>{{ user[3] }}</td> 
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="columna">
+            <h1>Añadir Nuevo Ingrediente</h1>
+            <form action="/admin/crear-ingrediente" method="post">
+                <label for="nombre">Nombre del Ingrediente:</label>
+                <input type="text" id="nombre" name="nombre" required><br><br>
+
+                <label for="descripcion">Descripción:</label>
+                <textarea id="descripcion" name="descripcion" required></textarea><br><br>
+
+                <input type="submit" value="Añadir Ingrediente">
+            </form>
+        </div>
+        <div class="columna">
+            <!-- Tabla de Ingredientes -->
+            <table>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                </tr>
+                {% for ingredient in ingredients %}
+                <tr>
+                    <td>{{ ingredient[1]}}</td>
+                    <td>{{ ingredient[2] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+
+
+
+
+
+</body>
+
+</html>
