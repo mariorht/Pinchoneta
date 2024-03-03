@@ -8,12 +8,12 @@
 <body>
     {% include 'navbar.html' %}
     <h1>Editar Ingrediente</h1>
-    <form action="{{ url_for('editar_ingrediente', ingrediente_id=ingrediente.IngredienteID) }}" method="POST">
+    <form action="{{ url_for('editar_ingrediente', ingrediente_id=ingrediente.ingrediente_id) }}" method="POST">
         <label for="nombre">Nombre del Ingrediente:</label>
-        <input type="text" id="nombre" name="nombre" value="{{ ingrediente.Nombre }}" required><br><br>
+        <input type="text" id="nombre" name="nombre" value="{{ ingrediente.nombre }}" required><br><br>
         
         <label for="descripcion">Descripción:</label>
-        <textarea id="descripcion" name="descripcion" required>{{ ingrediente.Descripción }}</textarea><br><br>
+        <textarea id="descripcion" name="descripcion" required>{{ ingrediente.descripcion }}</textarea><br><br>
         
         <input type="submit" value="Actualizar Ingrediente">
     </form>

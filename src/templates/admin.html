@@ -38,11 +38,11 @@
                 </tr>
                 {% for user in users %}
                 <tr>
-                    <td>{{ user[1] }}</td>
-                    <td>{{ user[2] }}</td>
-                    <td>{{ user[3] }}</td>
-                    <td><a href="/admin/editar-usuario/{{ user[0] }}">Editar</a></td>
-                    <td><a href="/admin/borrar-usuario/{{ user[0] }}">Borrar</a></td>
+                    <td>{{ user.nombre }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.fecha_registro }}</td>
+                    <td><a href="/admin/editar-usuario/{{ user.usuario_id }}">Editar</a></td>
+                    <td><a href="/admin/borrar-usuario/{{ user.usuario_id }}">Borrar</a></td>
                 </tr>
                 {% endfor %}
             </table>
@@ -73,10 +73,10 @@
                 </tr>
                 {% for ingredient in ingredients %}
                 <tr>
-                    <td>{{ ingredient[1]}}</td>
-                    <td>{{ ingredient[2] }}</td>
-                    <td><a href="/admin/editar-ingrediente/{{ ingredient[0] }}">Editar</a></td>
-                    <td><a href="/admin/borrar-ingrediente/{{ ingredient[0] }}">Borrar</a></td>
+                    <td>{{ ingredient.nombre }}</td>
+                    <td>{{ ingredient.descripcion }}</td>
+                    <td><a href="/admin/editar-ingrediente/{{ ingredient.ingrediente_id }}">Editar</a></td>
+                    <td><a href="/admin/borrar-ingrediente/{{ ingredient.ingrediente_id }}">Borrar</a></td>
                 </tr>
                 {% endfor %}
             </table>
