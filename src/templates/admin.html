@@ -5,12 +5,10 @@
     <meta charset="UTF-8">
     <title>Página de Administrador</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-
 </head>
 
 <body>
     {% include 'navbar.html' %}
-
 
     <div class="row">
         <div class="columna">
@@ -35,12 +33,16 @@
                     <th>Nombre</th>
                     <th>Email</th>
                     <th>Fecha de Registro</th>
+                    <th>Editar</th>
+                    <th>Borrar</th>
                 </tr>
                 {% for user in users %}
                 <tr>
                     <td>{{ user[1] }}</td>
                     <td>{{ user[2] }}</td>
-                    <td>{{ user[3] }}</td> 
+                    <td>{{ user[3] }}</td>
+                    <td><a href="/admin/editar-usuario/{{ user[0] }}">Editar</a></td>
+                    <td><a href="/admin/borrar-usuario/{{ user[0] }}">Borrar</a></td>
                 </tr>
                 {% endfor %}
             </table>
@@ -66,22 +68,20 @@
                 <tr>
                     <th>Nombre</th>
                     <th>Descripción</th>
+                    <th>Editar</th>
+                    <th>Borrar</th>
                 </tr>
                 {% for ingredient in ingredients %}
                 <tr>
                     <td>{{ ingredient[1]}}</td>
                     <td>{{ ingredient[2] }}</td>
+                    <td><a href="/admin/editar-ingrediente/{{ ingredient[0] }}">Editar</a></td>
+                    <td><a href="/admin/borrar-ingrediente/{{ ingredient[0] }}">Borrar</a></td>
                 </tr>
                 {% endfor %}
             </table>
         </div>
     </div>
-
-
-
-
-
-
 </body>
 
 </html>

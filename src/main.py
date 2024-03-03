@@ -32,7 +32,6 @@ def profile():
 def admin():
     users = db.get_all_users()
     ingredients = db.get_all_ingredients()
-    print(users)
     return render_template('admin.html', users=users, ingredients=ingredients)
 
 
@@ -60,6 +59,50 @@ def crear_ingrediente():
     
     # Redirigir a otra página, por ejemplo, a la página principal de administración tras añadir el ingrediente.
     return redirect(url_for('admin'))
+
+
+
+@app.route('/admin/editar-usuario/<int:user_id>', methods=['GET', 'POST'])
+def editar_usuario(user_id):
+    if request.method == 'POST':
+        # Aquí procesarías los datos enviados desde el formulario de edición
+        nombre = request.form['nombre']
+        email = request.form['email']
+        fecha_registro = request.form['fechaRegistro']
+        # Actualiza el usuario en la base de datos
+        db.update_user(user_id, nombre, email, fecha_registro)
+        return redirect(url_for('admin'))
+    else:
+        # Obtén los detalles del usuario para mostrarlos en el formulario de edición
+        user = db.get_user_by_id(user_id)
+        return render_template('editar_usuario.html', user=user)
+
+@app.route('/admin/borrar-usuario/<int:user_id>')
+def borrar_usuario(user_id):
+    db.delete_user(user_id)
+    return redirect(url_for('admin'))
+
+# Repite patrones similares para editar y borrar ingredientes
+@app.route('/admin/editar-ingrediente/<int:ingrediente_id>', methods=['GET', 'POST'])
+def editar_ingrediente(ingrediente_id):
+    if request.method == 'POST':
+        # Procesar los datos enviados desde el formulario de edición
+        nombre = request.form['nombre']
+        descripcion = request.form['descripcion']
+        # Actualiza el ingrediente en la base de datos
+        db.update_ingredient(ingrediente_id, nombre, descripcion)
+        return redirect(url_for('admin'))  # Asume que 'admin' es la función/ruta de tu página de administración
+    else:
+        # Obtén los detalles del ingrediente para mostrarlos en el formulario de edición
+        ingrediente = db.get_ingrediente_by_id(ingrediente_id)
+        return render_template('editar_ingrediente.html', ingrediente=ingrediente)
+
+
+@app.route('/admin/borrar-ingrediente/<int:ingrediente_id>')
+def borrar_ingrediente(ingrediente_id):
+    db.delete_ingredient(ingrediente_id)
+    return redirect(url_for('admin'))
+
 
 
 
