@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Bocadillo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    {% include 'navbar.html' %}
+
+    <h1>Editar Bocadillo</h1>
+    <form action="{{ url_for('editar_bocadillo', bocadillo_id=bocadillo.bocadillo_id) }}" method="POST">
+        <label for="nombreBocadillo">Nombre del Bocadillo:</label>
+        <input type="text" id="nombreBocadillo" name="nombreBocadillo" value="{{ bocadillo.nombre }}" required><br><br>
+
+        <label for="ingredientes">Selecciona los Ingredientes:</label>
+        <select id="ingredientes" name="ingredientes" multiple required>
+            {% for ingrediente in todos_ingredientes %}
+                <option value="{{ ingrediente.ingrediente_id }}"
+                    {% if ingrediente.nombre in bocadillo.ingredientes %} selected {% endif %}>
+                    {{ ingrediente.nombre }}
+                </option>
+            {% endfor %}
+        </select><br><br>
+
+        <input type="submit" value="Actualizar Bocadillo">
+    </form>
+</body>
+</html>

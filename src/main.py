@@ -29,7 +29,8 @@ def admin():
     users = db_manager.get_all_users()
     ingredients = db_manager.get_all_ingredients()
     bocadillos = db_manager.get_all_bocadillos()
-    return render_template('admin.html', users=users, ingredients=ingredients, bocadillos=bocadillos )
+    hoy = datetime.now().strftime('%Y-%m-%d')
+    return render_template('admin.html', users=users, ingredients=ingredients, bocadillos=bocadillos, hoy=hoy )
 
 @app.route('/admin/crear-usuario', methods=['POST'])
 def crear_usuario():
@@ -92,3 +93,25 @@ def crear_bocadillo():
     db_manager.insert_bocadillo(nuevo_bocadillo, ingredientes_ids)
     return redirect(url_for('admin'))
  
+ 
+@app.route('/admin/editar-bocadillo/<int:bocadillo_id>', methods=['GET', 'POST'])
+def editar_bocadillo(bocadillo_id):
+    if request.method == 'POST':
+        nombre_bocadillo = request.form['nombreBocadillo']
+        ingredientes_ids = request.form.getlist('ingredientes')  # IDs de los ingredientes seleccionados
+        
+        # Suponiendo que tienes una manera de crear/actualizar un objeto Bocadillo
+        bocadillo_actualizado = Bocadillo(nombre=nombre_bocadillo, bocadillo_id=bocadillo_id)
+        db_manager.update_bocadillo(bocadillo_actualizado, ingredientes_ids)
+        
+        return redirect(url_for('admin'))
+    else:
+        bocadillo = db_manager.get_bocadillo_by_id(bocadillo_id) 
+        todos_ingredientes = db_manager.get_all_ingredients()  # Para listar en el formulario
+        return render_template('editar_bocadillo.html', bocadillo=bocadillo, todos_ingredientes=todos_ingredientes)
+
+
+@app.route('/admin/borrar-bocadillo/<int:bocadillo_id>')
+def borrar_bocadillo(bocadillo_id):
+    db_manager.delete_bocadillo(bocadillo_id)
+    return redirect(url_for('admin'))

@@ -61,6 +61,36 @@ input[type="submit"]:hover {
     background-color: #45a049;
 }
 
+input[type="date"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    appearance: none; /* Quita el estilo nativo del navegador */
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23444444" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'); /* Agrega un icono de calendario personalizado */
+    background-repeat: no-repeat;
+    background-position: right 8px top 50%;
+    background-size: 24px;
+}
+
+
+select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    appearance: none; /* Quita el estilo nativo del navegador */
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23444444" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'); /* Agrega una flecha personalizada */
+    background-repeat: no-repeat;
+    background-position: right 8px top 50%;
+    background-size: 24px;
+}
+
+
 
 /* Estilos para las tablas */
 table {

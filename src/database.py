@@ -179,3 +179,59 @@ class DatabaseManager:
         
         conn.close()
         return bocadillos
+
+
+    def delete_bocadillo(self, bocadillo_id):
+        conn = self.get_db_connection()
+        cursor = conn.cursor()
+        # Primero, eliminar las relaciones bocadillo-ingrediente
+        cursor.execute("DELETE FROM BocadilloIngredientes WHERE BocadilloID = ?", (bocadillo_id,))
+        # Luego, eliminar el bocadillo
+        cursor.execute("DELETE FROM Bocadillos WHERE BocadilloID = ?", (bocadillo_id,))
+        conn.commit()
+        conn.close()
+
+    def update_bocadillo(self, bocadillo, ingredientes_ids):
+        conn = self.get_db_connection()
+        cursor = conn.cursor()
+        # Actualizar el nombre del bocadillo
+        cursor.execute("UPDATE Bocadillos SET Nombre = ? WHERE BocadilloID = ?", (bocadillo.nombre, bocadillo.bocadillo_id))
+        
+        # Eliminar las relaciones bocadillo-ingrediente existentes
+        cursor.execute("DELETE FROM BocadilloIngredientes WHERE BocadilloID = ?", (bocadillo.bocadillo_id,))
+        
+        # Crear nuevas relaciones bocadillo-ingrediente
+        for ingrediente_id in ingredientes_ids:
+            cursor.execute("INSERT INTO BocadilloIngredientes (BocadilloID, IngredienteID) VALUES (?, ?)", (bocadillo.bocadillo_id, ingrediente_id))
+        
+        conn.commit()
+        conn.close()
+
+    def get_bocadillo_by_id(self, bocadillo_id):
+        conn = self.get_db_connection()
+        cursor = conn.cursor()
+        
+        # Recuperar el bocadillo
+        cursor.execute("SELECT * FROM Bocadillos WHERE BocadilloID = ?", (bocadillo_id,))
+        bocadillo_raw = cursor.fetchone()
+        
+        if not bocadillo_raw:
+            return None
+        
+        # Recuperar los ingredientes asociados con el bocadillo
+        cursor.execute("""
+            SELECT i.IngredienteID, i.Nombre, i.Descripción 
+            FROM Ingredientes i
+            JOIN BocadilloIngredientes bi ON i.IngredienteID = bi.IngredienteID
+            WHERE bi.BocadilloID = ?
+        """, (bocadillo_id,))
+        ingredientes_raw = cursor.fetchall()
+        
+        # Crear instancias de Ingredient para cada ingrediente
+        ingredientes = [Ingredient(ingrediente_id=ing['IngredienteID'], nombre=ing['Nombre'], descripcion=ing['Descripción']) for ing in ingredientes_raw]
+        
+        # Crear y devolver la instancia de Bocadillo
+        bocadillo = Bocadillo(bocadillo_id=bocadillo_raw['BocadilloID'], nombre=bocadillo_raw['Nombre'], ingredientes=ingredientes)
+        
+        conn.close()
+        return bocadillo
