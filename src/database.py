@@ -14,6 +14,13 @@ class Ingredient:
         self.ingrediente_id = ingrediente_id
         self.nombre = nombre
         self.descripcion = descripcion
+        
+class Bocadillo:
+    def __init__(self, nombre, ingredientes=None, bocadillo_id=None):
+        self.bocadillo_id = bocadillo_id
+        self.nombre = nombre
+        # Inicializa ingredientes como una lista vacía si no se proporciona ninguno
+        self.ingredientes = ingredientes if ingredientes is not None else []
 
 
 
@@ -129,133 +136,46 @@ class DatabaseManager:
         return [Ingredient(row['Nombre'], row['Descripción'], row['IngredienteID']) for row in rows]
 
 
+    def insert_bocadillo(self, bocadillo, ingredientes_ids):
+        conn = self.get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO Bocadillos (Nombre) VALUES (?)", (bocadillo.nombre,))
+        bocadillo_id = cursor.lastrowid
+        
+        for ingrediente_id in ingredientes_ids:
+            cursor.execute("INSERT INTO BocadilloIngredientes (BocadilloID, IngredienteID) VALUES (?, ?)", (bocadillo_id, ingrediente_id))
+        
+        conn.commit()
+        conn.close()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-###########################################################
-# def get_db_connection():
-#     conn = sqlite3.connect(DATABASE_PATH)
-#     return conn
-
-# def create_db_from_sql(sql_file_path):
-#     with open(sql_file_path, 'r') as sql_file:
-#         sql_script = sql_file.read()
-    
-#     conn = get_db_connection()
-#     cursor = conn.cursor()
-#     cursor.executescript(sql_script)
-#     conn.commit()
-#     conn.close()
-
-# def init_db():
-#     # Verificar si la base de datos existe, si no, crearla
-#     if not os.path.exists(DATABASE_PATH):
-#         print("No existe base de datos, se crea una vacía")
-#         os.makedirs(os.path.dirname(DATABASE_PATH), exist_ok=True)  # Crea el directorio si no existe
-#         create_db_from_sql(SQL_SCRIPT_PATH)
-#     else:
-#         print("Ya existe base de datos")
-
-
-# def insert_user(nombre, email, fecha_registro):
-#     conn = get_db_connection()
-#     cursor = conn.cursor()
-#     cursor.execute('INSERT INTO Usuarios (Nombre, Email, FechaRegistro) VALUES (?, ?, ?)', 
-#                    (nombre, email, fecha_registro))
-#     conn.commit()
-#     conn.close()
-
-
-# def insert_ingredient(nombre, descripcion):
-#     conn = get_db_connection()
-#     cursor = conn.cursor()
-#     cursor.execute('INSERT INTO Ingredientes (Nombre, Descripción) VALUES (?, ?)', 
-#                    (nombre, descripcion))
-#     conn.commit()
-#     conn.close()
-
-# def get_all_users():
-#     conn = get_db_connection()
-#     users = conn.execute('SELECT * FROM Usuarios').fetchall()
-#     conn.close()
-#     return users
-
-# def get_all_ingredients():
-#     conn = get_db_connection()
-#     ingredients = conn.execute('SELECT * FROM Ingredientes').fetchall()
-#     conn.close()
-#     return ingredients
-
-
-# def update_user(user_id, nombre, email, fecha_registro):
-#     conn = get_db_connection()
-#     cursor = conn.cursor()
-#     # Actualizamos el nombre de la columna ID a UsuarioID para coincidir con tu esquema de DB
-#     cursor.execute('UPDATE Usuarios SET Nombre = ?, Email = ?, FechaRegistro = ? WHERE UsuarioID = ?', 
-#                    (nombre, email, fecha_registro, user_id))
-#     conn.commit()
-#     conn.close()
-
-# def delete_user(user_id):
-#     conn = get_db_connection()
-#     cursor = conn.cursor()
-#     # Usamos UsuarioID como clave primaria
-#     cursor.execute('DELETE FROM Usuarios WHERE UsuarioID = ?', (user_id,))
-#     conn.commit()
-#     conn.close()
-
-# def update_ingredient(ingrediente_id, nombre, descripcion):
-#     conn = get_db_connection()
-#     cursor = conn.cursor()
-#     # Ajustamos el nombre de la columna ID a IngredienteID y corregimos 'Descripción' si necesario
-#     cursor.execute('UPDATE Ingredientes SET Nombre = ?, Descripción = ? WHERE IngredienteID = ?', 
-#                    (nombre, descripcion, ingrediente_id))
-#     conn.commit()
-#     conn.close()
-
-# def delete_ingredient(ingrediente_id):
-#     conn = get_db_connection()
-#     cursor = conn.cursor()
-#     # Usamos IngredienteID como clave primaria
-#     cursor.execute('DELETE FROM Ingredientes WHERE IngredienteID = ?', (ingrediente_id,))
-#     conn.commit()
-#     conn.close()
-
-
-# def get_user_by_id(user_id):
-#     conn = get_db_connection()
-#     conn.row_factory = sqlite3.Row  # Configura el factory para devolver filas como diccionarios
-#     cursor = conn.cursor()
-#     cursor.execute('SELECT * FROM Usuarios WHERE UsuarioID = ?', (user_id,))
-#     user = cursor.fetchone()
-#     conn.close()
-#     if user:
-#         return dict(user)  # Convierte la fila en un diccionario
-#     else:
-#         return None
-
-
-# def get_ingrediente_by_id(ingrediente_id):
-#     conn = get_db_connection()
-#     conn.row_factory = sqlite3.Row  # Configura el factory para devolver filas como diccionarios
-#     cursor = conn.cursor()
-#     cursor.execute('SELECT * FROM Ingredientes WHERE IngredienteID = ?', (ingrediente_id,))
-#     ingrediente = cursor.fetchone()
-#     conn.close()
-#     if ingrediente:
-#         return dict(ingrediente)  # Convierte la fila en un diccionario
-#     else:
-#         return None
-
-
+    def get_all_bocadillos(self):
+        conn = self.get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM Bocadillos")
+        bocadillos_raw = cursor.fetchall()
+        
+        bocadillos = []
+        for bocadillo_raw in bocadillos_raw:
+            # Recuperar ingredientes para este bocadillo
+            cursor.execute("""
+                SELECT i.IngredienteID, i.Nombre, i.Descripción 
+                FROM Ingredientes i 
+                JOIN BocadilloIngredientes bi ON i.IngredienteID = bi.IngredienteID 
+                WHERE bi.BocadilloID = ?
+            """, (bocadillo_raw['BocadilloID'],))
+            ingredientes_raw = cursor.fetchall()
+            
+            # Crear instancias de Ingredient para cada ingrediente
+            ingredientes = [Ingredient(ingrediente_id=ing['IngredienteID'], nombre=ing['Nombre'], descripcion=ing['Descripción']) for ing in ingredientes_raw]
+            
+            # Crear instancia de Bocadillo con la lista de ingredientes
+            bocadillo = Bocadillo(
+                bocadillo_id=bocadillo_raw['BocadilloID'],
+                nombre=bocadillo_raw['Nombre'],
+                ingredientes=ingredientes
+            )
+            
+            bocadillos.append(bocadillo)
+        
+        conn.close()
+        return bocadillos

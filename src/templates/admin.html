@@ -82,6 +82,61 @@
             </table>
         </div>
     </div>
+
+
+    <div class="row">
+        <div class="columna">
+            <h1>Añadir Nuevo Bocadillo</h1>
+            <form action="/admin/crear-bocadillo" method="post">
+                <label for="nombreBocadillo">Nombre del Bocadillo:</label>
+                <input type="text" id="nombreBocadillo" name="nombreBocadillo" required><br><br>
+
+                <label for="ingredientes">Selecciona los Ingredientes:</label>
+                <select id="ingredientes" name="ingredientes" multiple required>
+                    {% for ingrediente in ingredients %}
+                    <option value="{{ ingrediente.ingrediente_id }}">{{ ingrediente.nombre }}</option>
+                    {% endfor %}
+                </select><br><br>
+
+                <input type="submit" value="Añadir Bocadillo">
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="columna">
+            <h2>Bocadillos Existentes</h2>
+            <table>
+                <tr>
+                    <th>Nombre del Bocadillo</th>
+                    <th>Ingredientes</th>
+                    <th>Editar</th>
+                    <th>Borrar</th>
+                </tr>
+                {% for bocadillo in bocadillos %}
+                <tr>
+                    <td>{{ bocadillo.nombre }}</td>
+                    <td>
+                        {% for ingrediente in bocadillo.ingredientes %}
+                            {{ ingrediente.nombre }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                    
+                    <td>
+                        <a href="/admin/editar-bocadillo/{{ bocadillo.bocadillo_id }}">Editar</a> 
+                    </td>
+
+                    <td>
+                        <a href="/admin/borrar-bocadillo/{{ bocadillo.bocadillo_id }}">Borrar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+
+
 </body>
 
 </html>

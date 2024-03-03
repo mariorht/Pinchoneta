@@ -1,7 +1,7 @@
 from flask import Flask, request, redirect, url_for, render_template
 from datetime import datetime, timedelta
 import random
-from database import DatabaseManager, User, Ingredient  # Asegura que esto coincida con tus nombres de importación
+from database import DatabaseManager, User, Ingredient, Bocadillo  # Asegura que esto coincida con tus nombres de importación
 
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
@@ -28,7 +28,8 @@ def profile():
 def admin():
     users = db_manager.get_all_users()
     ingredients = db_manager.get_all_ingredients()
-    return render_template('admin.html', users=users, ingredients=ingredients)
+    bocadillos = db_manager.get_all_bocadillos()
+    return render_template('admin.html', users=users, ingredients=ingredients, bocadillos=bocadillos )
 
 @app.route('/admin/crear-usuario', methods=['POST'])
 def crear_usuario():
@@ -83,3 +84,11 @@ def borrar_ingrediente(ingrediente_id):
     return redirect(url_for('admin'))
 
 
+@app.route('/admin/crear-bocadillo', methods=['POST'])
+def crear_bocadillo():
+    nombre_bocadillo = request.form['nombreBocadillo']
+    ingredientes_ids = request.form.getlist('ingredientes')  # Esto captura los IDs de los ingredientes seleccionados
+    nuevo_bocadillo = Bocadillo(nombre=nombre_bocadillo)
+    db_manager.insert_bocadillo(nuevo_bocadillo, ingredientes_ids)
+    return redirect(url_for('admin'))
+ 
