@@ -8,6 +8,7 @@ WORKDIR /app
 COPY requirements.txt /app/requirements.txt
 COPY src /app/src
 COPY start_server.sh /app/start_server.sh
+RUN chmod +x /app/start_server.sh 
 
 # Instala las dependencias
 RUN pip install -r requirements.txt
