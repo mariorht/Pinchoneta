@@ -1,8 +1,13 @@
 /* styles.css */
+body {
+    background-color: #333; /* Fondo oscuro */
+    color: #fff; /* Texto blanco para contraste */
+}
+
 .navbar {
     overflow: hidden;
-    background-color: #2196F3; /* Azul Material Design */
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Sombra para dar profundidad */
+    background-color: #212121; /* Gris oscuro */
+    box-shadow: 0 4px 8px 0 rgba(255,255,255,0.2); /* Sombra para dar profundidad */
 }
 
 .navbar a {
@@ -24,7 +29,6 @@
     margin-top: 30px; /* Espacio entre el contenido y la navbar */
 }
 
-
 /* Estilos para los formularios */
 form {
     margin-bottom: 20px;
@@ -34,17 +38,22 @@ label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
+    color: #fff; /* Texto blanco para contraste */
 }
 
 input[type="text"],
 input[type="email"],
-textarea {
+textarea,
+input[type="date"],
+select {
     width: 100%;
     padding: 8px;
     margin-bottom: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #555; /* Borde más oscuro */
     border-radius: 4px;
     box-sizing: border-box;
+    background-color: #444; /* Gris más oscuro */
+    color: #fff; /* Texto blanco para contraste */
 }
 
 input[type="submit"] {
@@ -61,57 +70,27 @@ input[type="submit"]:hover {
     background-color: #45a049;
 }
 
-input[type="date"] {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    appearance: none; /* Quita el estilo nativo del navegador */
-    background-image: url('data:image/svg+xml;utf8,<svg fill="%23444444" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'); /* Agrega un icono de calendario personalizado */
-    background-repeat: no-repeat;
-    background-position: right 8px top 50%;
-    background-size: 24px;
-}
-
-
-select {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    appearance: none; /* Quita el estilo nativo del navegador */
-    background-image: url('data:image/svg+xml;utf8,<svg fill="%23444444" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'); /* Agrega una flecha personalizada */
-    background-repeat: no-repeat;
-    background-position: right 8px top 50%;
-    background-size: 24px;
-}
-
-
-
 /* Estilos para las tablas */
 table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
+    color: #fff; /* Texto blanco para contraste */
 }
 
 th, td {
-    border: 1px solid #ddd;
+    border: 1px solid #555; /* Borde más oscuro */
     padding: 8px;
     text-align: left;
 }
 
 th {
-    background-color: #f2f2f2;
+    background-color: #333; /* Gris oscuro */
     font-weight: bold;
 }
 
 tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: #555; /* Gris más claro */
 }
 
 /* Estilos para la disposición de los elementos */
