@@ -4,4 +4,9 @@ services:
     build: .
     ports:
       - "8081:8081"
+    volumes:
+    - db_volume:/app/data
     command: ./start_server.sh
+
+volumes:
+  db_volume:

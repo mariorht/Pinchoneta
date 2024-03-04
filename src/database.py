@@ -37,7 +37,7 @@ class Pedido:
 
 
 class DatabaseManager:
-    DATABASE_PATH = 'src/db/pinchonetaDB.db'
+    DATABASE_PATH = 'data/pinchonetaDB.db'
     SQL_SCRIPT_PATH = 'src/db/empty_bbdd.sql'
 
     def __init__(self):
