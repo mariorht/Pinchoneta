@@ -13,6 +13,53 @@
 
     <h1>Súbete a la pinchoneta</h1>
 
+    <form action="/registrar-pedido" method="post">
+        <label for="usuario">Usuario:</label>
+        <select id="usuario" name="usuario_id" required>
+            <option value="" disabled selected>Selecciona un usuario</option>
+            {% for usuario in usuarios %}
+            <option value="{{ usuario.usuario_id }}">{{ usuario.nombre }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label for="bocadillo">Bocadillo:</label>
+        <select id="bocadillo" name="bocadillo_id" required>
+            <option value="" disabled selected>Selecciona un bocadillo</option>
+            {% for bocadillo in bocadillos %}
+            <option value="{{ bocadillo.bocadillo_id }}">{{ bocadillo.nombre }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <input type="submit" value="Registrar Pedido">
+    </form>
+
+
+
+    <h2>Bocadillos Pedidos</h2>
+    <table>
+        <tr>
+            <th>Usuario</th>
+            <th>Bocadillo</th>
+            <th>Fecha</th>
+            <th>Acciones</th> <!-- Columna adicional para acciones -->
+        </tr>
+        {% for pedido in pedidos %}
+        <tr>
+            <td>{{ pedido.usuario.nombre }}</td>
+            <td>{{ pedido.bocadillo.nombre }}</td>
+            <td>{{ pedido.fecha_consumo }}</td>
+            <td>
+                <!-- Enlace para borrar el pedido, usando el registro_id del pedido -->
+                <a href="/borrar-pedido/{{ pedido.registro_id }}" onclick="return confirm('¿Estás seguro de querer borrar este pedido?');">Borrar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+    
+
+
+
 </body>
 
 </html>

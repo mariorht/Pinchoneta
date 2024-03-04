@@ -1,5 +1,7 @@
 import sqlite3
 import os
+import datetime
+
 
 class User:
     def __init__(self, nombre, email, fecha_registro, usuario_id=None):
@@ -21,6 +23,15 @@ class Bocadillo:
         self.nombre = nombre
         # Inicializa ingredientes como una lista vacía si no se proporciona ninguno
         self.ingredientes = ingredientes if ingredientes is not None else []
+        
+class Pedido:
+    def __init__(self, registro_id=None, usuario=None, bocadillo=None, fecha_consumo=None):
+        self.registro_id = registro_id
+        self.usuario = usuario  # Instancia de la clase Usuario
+        self.bocadillo = bocadillo  # Instancia de la clase Bocadillo
+        self.fecha_consumo = fecha_consumo
+
+
 
 
 
@@ -235,3 +246,51 @@ class DatabaseManager:
         
         conn.close()
         return bocadillo
+
+
+    def get_all_pedidos(self):
+        conn = self.get_db_connection()
+        cursor = conn.cursor()
+        
+        cursor.execute("""
+        SELECT rc.RegistroID, rc.FechaConsumo, 
+            u.UsuarioID, u.Nombre AS UsuarioNombre, u.Email, u.FechaRegistro, 
+            b.BocadilloID, b.Nombre AS BocadilloNombre
+        FROM RegistrosDeConsumo rc
+        JOIN Usuarios u ON rc.UsuarioID = u.UsuarioID
+        JOIN Bocadillos b ON rc.BocadilloID = b.BocadilloID
+        ORDER BY rc.FechaConsumo DESC
+        """)
+        
+        registros_raw = cursor.fetchall()
+        
+        pedidos = []
+        for registro in registros_raw:
+            usuario = User(usuario_id=registro['UsuarioID'], nombre=registro['UsuarioNombre'], email=registro['Email'], fecha_registro=registro['FechaRegistro'])
+            bocadillo = Bocadillo(bocadillo_id=registro['BocadilloID'], nombre=registro['BocadilloNombre'])
+            pedido = Pedido(registro_id=registro['RegistroID'], usuario=usuario, bocadillo=bocadillo, fecha_consumo=registro['FechaConsumo'])
+            pedidos.append(pedido)
+        
+        conn.close()
+        return pedidos
+
+    def insertar_pedido(self, usuario_id, bocadillo_id):
+        conn = self.get_db_connection()
+        cursor = conn.cursor()
+
+        # Obtener la fecha actual para registrar el momento del pedido
+        fecha_consumo = datetime.datetime.now().strftime('%Y-%m-%d')
+
+        # Insertar el nuevo registro de consumo
+        cursor.execute("INSERT INTO RegistrosDeConsumo (UsuarioID, BocadilloID, FechaConsumo) VALUES (?, ?, ?)", (usuario_id, bocadillo_id, fecha_consumo))
+
+        conn.commit()
+        conn.close()
+        
+        
+    def borrar_pedido(self, registro_id):
+        conn = self.get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM RegistrosDeConsumo WHERE RegistroID = ?", (registro_id,))
+        conn.commit()
+        conn.close()

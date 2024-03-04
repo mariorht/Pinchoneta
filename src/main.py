@@ -1,7 +1,7 @@
 from flask import Flask, request, redirect, url_for, render_template
 from datetime import datetime, timedelta
 import random
-from database import DatabaseManager, User, Ingredient, Bocadillo  # Asegura que esto coincida con tus nombres de importación
+from database import DatabaseManager, User, Ingredient, Bocadillo, Pedido  # Asegura que esto coincida con tus nombres de importación
 
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
@@ -10,7 +10,11 @@ db_manager.ensure_database()
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    usuarios = db_manager.get_all_users()
+    bocadillos = db_manager.get_all_bocadillos()
+    pedidos = db_manager.get_all_pedidos()
+    return render_template('index.html', usuarios=usuarios, bocadillos=bocadillos, pedidos=pedidos)
+
 
 # Generar datos de uso para los últimos 365 días
 start_date = datetime.now() - timedelta(days=365)
@@ -115,3 +119,17 @@ def editar_bocadillo(bocadillo_id):
 def borrar_bocadillo(bocadillo_id):
     db_manager.delete_bocadillo(bocadillo_id)
     return redirect(url_for('admin'))
+
+
+
+@app.route('/registrar-pedido', methods=['POST'])
+def registrar_pedido():
+    usuario_id = request.form['usuario_id']
+    bocadillo_id = request.form['bocadillo_id']
+    db_manager.insertar_pedido(usuario_id, bocadillo_id)
+    return redirect(url_for('home'))
+
+@app.route('/borrar-pedido/<int:registro_id>')
+def borrar_pedido(registro_id):
+    db_manager.borrar_pedido(registro_id)  # Asume que este método existe en db_manager
+    return redirect(url_for('home'))
