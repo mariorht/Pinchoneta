@@ -18,9 +18,21 @@ def home():
 
 @app.route('/profile')
 def profile():
-    usuario_id = 3  # Aquí debes determinar cómo obtener el ID del usuario actual
-    consumo_data = db_manager.get_consumo_usuario_por_fecha(usuario_id)
-    return render_template('profile.html', usage_data=consumo_data)
+    usuarios = db_manager.get_all_users()  # Obtiene todos los usuarios
+    usuarios_y_consumo = []
+
+    for usuario in usuarios:
+        consumo_data = db_manager.get_consumo_usuario_por_fecha(usuario.usuario_id)
+        # Combina el usuario y sus datos de consumo en un diccionario
+        usuario_con_consumo = {
+            "usuario": usuario,
+            "consumo_data": consumo_data
+        }
+        usuarios_y_consumo.append(usuario_con_consumo)
+
+    return render_template('profile.html', usuarios_y_consumo=usuarios_y_consumo)
+
+
 
 
 @app.route('/admin', methods=['GET'])

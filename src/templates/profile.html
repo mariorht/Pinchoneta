@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Perfil de Usuario</title>
@@ -9,18 +10,24 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/ussageChart.css') }}">
 
+    <script src="{{ url_for('static', filename='js/ussageChart.js') }}"></script>
+
 </head>
+
 <body>
     {% include 'navbar.html' %}
 
-
-    <h1>Perfil de Usuario</h1>
-
     <!-- Gráfico de uso -->
-    <div id="usageChart"></div>
+    {% for item in usuarios_y_consumo %}
+    <h2>Perfil de {{ item.usuario.nombre }}</h2>
+
+    <div id="usageChart{{ item.usuario.usuario_id }}"></div>
     <script>
-        var usageData = {{ usage_data | tojson }};
+        var usageData = {{ item.consumo_data | tojson }};
+        generateUsageChart(usageData, "#usageChart{{ item.usuario.usuario_id }}");
     </script>
-    <script src="{{ url_for('static', filename='js/ussageChart.js') }}"></script>
+    {% endfor %}
+
 </body>
+
 </html>
