@@ -326,3 +326,36 @@ class DatabaseManager:
             pedidos.append(nuevo_pedido)
 
         return pedidos
+
+
+    def get_consumo_usuario_por_fecha(self, usuario_id):
+        conn = self.get_db_connection()
+        cursor = conn.cursor()
+        
+        # Calcular la fecha de inicio como el 1 de enero del año actual
+        fecha_inicio = datetime.date(datetime.date.today().year, 1, 1)
+        # Calcular la fecha de fin como el 31 de diciembre del año actual
+        fecha_fin = datetime.date(datetime.date.today().year, 12, 31)
+
+        cursor.execute("""
+        SELECT FechaConsumo, COUNT(*) as Consumo
+        FROM RegistrosDeConsumo
+        WHERE UsuarioID = ? AND FechaConsumo >= ? AND FechaConsumo <= ?
+        GROUP BY FechaConsumo
+        ORDER BY FechaConsumo
+        """, (usuario_id, fecha_inicio, fecha_fin))
+        
+        # Convertir los resultados a un diccionario
+        consumo_raw = {row['FechaConsumo']: row['Consumo'] for row in cursor.fetchall()}
+        conn.close()
+
+        # Generar datos para cada día desde el 1 de enero hasta el 31 de diciembre del año actual
+        consumo_data = {}
+        delta = fecha_fin - fecha_inicio  # Diferencia en días desde el inicio hasta el fin del año
+        for i in range(delta.days + 1):  # +1 para incluir también el último día del año
+            dia = fecha_inicio + datetime.timedelta(days=i)
+            dia_str = dia.strftime('%Y-%m-%d')  # Convertir a cadena en formato 'YYYY-MM-DD'
+            consumo_data[dia_str] = consumo_raw.get(dia_str, 0)  # Usar el conteo de consumo_raw o 0 si no existe
+
+        return consumo_data
+
