@@ -12,7 +12,7 @@ db_manager.ensure_database()
 def home():
     usuarios = db_manager.get_all_users()
     bocadillos = db_manager.get_all_bocadillos()
-    pedidos = db_manager.get_all_pedidos()
+    pedidos = db_manager.get_pedidos_de_hoy()
     return render_template('index.html', usuarios=usuarios, bocadillos=bocadillos, pedidos=pedidos)
 
 

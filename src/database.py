@@ -294,3 +294,35 @@ class DatabaseManager:
         cursor.execute("DELETE FROM RegistrosDeConsumo WHERE RegistroID = ?", (registro_id,))
         conn.commit()
         conn.close()
+
+    def get_pedidos_de_hoy(self):
+        fecha_hoy = datetime.date.today().strftime('%Y-%m-%d')
+        conn = self.get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+        SELECT rc.RegistroID, rc.FechaConsumo, 
+            u.UsuarioID, u.Nombre AS UsuarioNombre, u.Email, u.FechaRegistro, 
+            b.BocadilloID, b.Nombre AS BocadilloNombre
+        FROM RegistrosDeConsumo rc
+        JOIN Usuarios u ON rc.UsuarioID = u.UsuarioID
+        JOIN Bocadillos b ON rc.BocadilloID = b.BocadilloID
+        WHERE rc.FechaConsumo = ?
+        ORDER BY rc.FechaConsumo DESC
+        """, (fecha_hoy,))
+
+        pedidos_raw = cursor.fetchall()
+        conn.close()
+
+        pedidos = []
+        for pedido in pedidos_raw:
+            # Creando instancias de Usuario y Bocadillo basadas en los datos recuperados
+            usuario = User(usuario_id=pedido['UsuarioID'], nombre=pedido['UsuarioNombre'], email=pedido['Email'], fecha_registro=pedido['FechaRegistro'])
+            bocadillo = Bocadillo(bocadillo_id=pedido['BocadilloID'], nombre=pedido['BocadilloNombre'])
+            
+            # Creando la instancia de Pedido
+            nuevo_pedido = Pedido(registro_id=pedido['RegistroID'], usuario=usuario, bocadillo=bocadillo, fecha_consumo=pedido['FechaConsumo'])
+            
+            pedidos.append(nuevo_pedido)
+
+        return pedidos
