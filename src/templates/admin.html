@@ -42,7 +42,7 @@
                     <td>{{ user.email }}</td>
                     <td>{{ user.fecha_registro }}</td>
                     <td><a href="/admin/editar-usuario/{{ user.usuario_id }}">Editar</a></td>
-                    <td><a href="/admin/borrar-usuario/{{ user.usuario_id }}">Borrar</a></td>
+                    <td><a href="/admin/borrar-usuario/{{ user.usuario_id }}" onclick="return confirm('¿Estás seguro de querer borrar este usuario?');">Borrar</a></td>
                 </tr>
                 {% endfor %}
             </table>
@@ -76,7 +76,7 @@
                     <td>{{ ingredient.nombre }}</td>
                     <td>{{ ingredient.descripcion }}</td>
                     <td><a href="/admin/editar-ingrediente/{{ ingredient.ingrediente_id }}">Editar</a></td>
-                    <td><a href="/admin/borrar-ingrediente/{{ ingredient.ingrediente_id }}">Borrar</a></td>
+                    <td><a href="/admin/borrar-ingrediente/{{ ingredient.ingrediente_id }}" onclick="return confirm('¿Estás seguro de querer borrar este ingrediente?');">Borrar</a></td>
                 </tr>
                 {% endfor %}
             </table>
@@ -122,13 +122,9 @@
                         {% endfor %}
                     </td>
                     
-                    <td>
-                        <a href="/admin/editar-bocadillo/{{ bocadillo.bocadillo_id }}">Editar</a> 
-                    </td>
+                    <td><a href="/admin/editar-bocadillo/{{ bocadillo.bocadillo_id }}">Editar</a></td>
+                    <td><a href="/admin/borrar-bocadillo/{{ bocadillo.bocadillo_id }}" onclick="return confirm('¿Estás seguro de querer borrar este bocadillo?');">Borrar</a></td>
 
-                    <td>
-                        <a href="/admin/borrar-bocadillo/{{ bocadillo.bocadillo_id }}">Borrar</a>
-                    </td>
                 </tr>
                 {% endfor %}
             </table>
