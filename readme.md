@@ -3,9 +3,7 @@
 Aplicación para llevar el registro de pinchos pedidos
 
 ## Último estado
-Tiene la base de la visualización con un ejemplo de números aleatorios
-
-Se pueden crear, editar y borrar usuarios, ingredientes y bocadillos
+Página funcional. Pendientes estilos, logos, favicon...
 
 ![ejemplo](https://github.com/mariorht/Pinchoneta/assets/22685503/3e3a641f-4017-4475-a637-c7635089a6e7)
 
