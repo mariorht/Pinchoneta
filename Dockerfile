@@ -10,8 +10,8 @@ RUN mkdir /app/data && chown -R nobody:nogroup /app/data
 # Copia los archivos necesarios al contenedor
 COPY requirements.txt /app/requirements.txt
 COPY src /app/src
-COPY start_server.sh /app/start_server.sh
-RUN chmod +x /app/start_server.sh 
+COPY start_gunicorn_server.sh /app/start_gunicorn_server.sh
+RUN chmod +x /app/start_gunicorn_server.sh 
 
 # Instala las dependencias
 RUN pip install -r requirements.txt

@@ -55,8 +55,7 @@ class DatabaseManager:
             print("No existe base de datos, se crea una vacía")
             os.makedirs(os.path.dirname(DatabaseManager.DATABASE_PATH), exist_ok=True)
             DatabaseManager.create_db_from_sql(DatabaseManager.SQL_SCRIPT_PATH)
-        else:
-            print("Ya existe base de datos")
+
 
     @staticmethod
     def create_db_from_sql(sql_file_path):

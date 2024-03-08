@@ -6,7 +6,6 @@ from database import DatabaseManager, User, Ingredient, Bocadillo, Pedido  # Ase
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 db_manager = DatabaseManager()
-db_manager.ensure_database()
 
 @app.route('/')
 def home():
